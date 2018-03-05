@@ -1,0 +1,394 @@
+# Getting Started
+
+This topic explains how to configure, build and run the *Camera Streaming Daemon* (CSD) on a Linux computer.
+
+> **Tip** The instructions explain how to following sections provide turnkey instructions to quickly set up CSD for some of the more common platforms.
+
+<!--
+
+While you can build and run CSD on any Linux computer, we recommend building CSD on a Ubuntu 16.04 LTS development machine and deploying it to a Linux companion computer (like the one on the Intel Aero). Thi
+
+> **Tip** These instructions show how to build and run CSD on Ubuntu 16.04 LTS desktop. The daemon can then be run on Ubuntu, or deployed and run on to another Linux computer (like the Intel Aero).
+
+The build system follows a typical configure > build > install cycle. The configuration step allows you enable/disable specific features in the build (this allows you to choose the combination of features that best-fits requirements). Currently you can enable support for: MAVLink Camera Protocol, RTSP stream discovery via Avahi, Intel RealSense 3D camera, Intel Aero bottom facing VGA camera. RTSP streaming is always enabled.
+
+Last of all we provide specific examples of how to set up CSD on Ubuntu to share camera information from attached Webcams 
+
+-->
+
+The instructions show how to build CSD on Ubuntu. They then show how to:
+* Run CSD on Ubuntu serving connected webcams
+* Run CSD on Ubuntu serving simulated camera running in a Gazebo environment
+* Deploy CSD to Intel Aero and run it there.
+
+> **Note** The instructions have been tested on Ubuntu 16.04 and the Intel Aero compute board (running Ubuntu/Yocto).
+
+<span id="dependencies"></span>
+## Prerequisites
+
+The CSD can be configured to enable/disable specific functionality at compile-time. As a result, some dependencies are only required in order to use specific features. 
+
+The following packages are needed to compile CSD with core functionality (RTSP streaming and MAVLink support):
+
+- Autoconf and libtool (for build configuration)
+- GCC/G++ compiler 4.9 or newer
+- C and C++ standard libraries
+- [GLib](https://wiki.gnome.org/Projects/GLib) 2.42 or newer 
+- [GStreamer](https://gstreamer.freedesktop.org/) 1.4 or newer 
+- [GStreamer RTSP Server](https://gstreamer.freedesktop.org/modules/gst-rtsp-server.html) 1.4 or newer 
+- Python 2
+
+Optional packages include:
+- [Avahi](https://github.com/lathiat/avahi) 0.6 to enable publishing what RTSP streams are available.
+- [RealSense](https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md#installing-the-packages) to support the Intel RealSense 3D Camera.
+- [Gazebo](http://gazebosim.org/) in order to enable a simulated camera within the Gazebo environment.
+
+
+## Installing Prerequisites on Ubuntu
+
+The following sections show how to install the required packages on Ubuntu 16.04 LTS.
+
+<span id="core_deps"></span>
+### Core Dependencies
+
+The core dependencies are required to build CSD with MAVLink and RTSP video streaming support.
+```sh
+sudo apt-get update -y
+sudo apt-get install git autoconf libtool python-pip -y
+sudo apt-get install gstreamer-1.0 \
+    libgstreamer-plugins-base1.0-dev \
+    libgstrtspserver-1.0-dev -y
+# Required python packages
+sudo pip2 -q install -U future
+```
+
+> **Note** GCC 5.4 and the C/C++ standard libraries are installed by default.
+
+
+<span id="avahi_deps"></span>
+### Avahi
+
+Run the following command to get the [Avahi](https://github.com/lathiat/avahi) dependencies:
+```sh
+sudo apt-get install libavahi-client-dev libavahi-core-dev libavahi-glib-dev -y
+```
+
+<span id="realsense_deps"></span>
+### RealSense 3D Camera
+
+Run the following command to get the [RealSense SDK 1](https://software.intel.com/sites/products/realsense/intro/getting_started.html) libraries:
+```
+echo 'deb "http://realsense-alm-public.s3.amazonaws.com/apt-repo" xenial main' | sudo tee /etc/apt/sources.list.d/realsense-latest.list
+sudo apt-key adv --keyserver keys.gnupg.net --recv-key D6FB2970 
+sudo apt update -y
+sudo apt-get install librealsense-dev -y
+```
+
+<!-- What are runtime dependencies? https://github.com/intel/camera-streaming-daemon/issues/124 -->
+
+> **Note** The RealSense 2 SDK is not supported. 
+
+<span></span>
+> **Note** CSD only has access to this camera when it is **not being used** for optical flow or VIO)
+
+<span id="gazebo_deps"></span>
+### Gazebo
+
+The easiest way to set up Gazebo and the PX4 simulator to use the *PX4 Developer Guide* scripts: [Development Environment on Linux > jMAVSim/Gazebo Simulation](https://dev.px4.io/en/setup/dev_env_linux.html#jmavsimgazebo-simulation).
+
+
+## Get the Source Code
+
+Clone the [camera-streaming-daemon](https://github.com/intel/camera-streaming-daemon) repo (or your fork):
+```sh
+git clone https://github.com/intel/camera-streaming-daemon.git
+cd camera-streaming-daemon
+git submodule update --init --recursive
+```
+
+This fetches all the sources for the project (including the [MAVLink C library](https://mavlink.io/en/) submodule, which is generated by the build system during compilation).
+
+> **Note** Alternatively you can do this in one line:
+  ```
+  git clone https://github.com/intel/camera-streaming-daemon.git --recursive
+  ```
+
+
+## Configure
+
+Configuration allows you to specify the features that will be included when CSD is compiled (this step need only be done once).
+
+The full configuration syntax is given below:
+```sh
+./autogen.sh && ./configure [--enable-mavlink] [--enable-aero] [--enable-avahi] [--enable-gazebo]
+```
+
+The optional configuration options enable specific functionality at compile-time:
+* `--enable-aero`: Enables aero-specific bottom bottom facing VGA camera (OV7251 sensor for optical flow/VIO).
+* `--enable-avahi`: Enables Avahi to advertise the list of available RTSP streams.
+* `--enable-mavlink`: Enables MAVLink [Camera Protocol](https://mavlink.io/en/protocol/camera.html) support.
+* `--enable-gazebo`: Enables Gazebo camera.
+
+In addition:
+* Support for the RealSense 3D camera is enabled automatically if the [RealSense binaries](#realsense_deps) are present.
+* CSD generates the file **csd.service** by default (used by the *Intel Aero* (only) to auto-start CSD on boot).
+  File generation can be disabled/configured using:
+  * `--disable-systemd`: Disable *systemd* support (i.e. on systems where *systemd* is not present).
+  * `--with-systemdsystemunitdir <path>`: Set the *systemd* system directory to `<path>` (Default is taken from **pkg-config**).
+
+The configuration step will fail gracefully if any [dependency](#dependencies) required by the specified configuration is not available.
+At the end of the configuration process the system will output a report showing what additional features are enabled: 
+```
+RealSense support:   yes
+MAVLink support:     yes
+AVAHI support:       no
+Intel Aero support:  no
+Gazebo support:      no
+```
+
+
+## Build
+
+After configuration, build the CSD using *make*:
+```
+make
+```
+
+The *csd* executable will be created in the root of your CSD source tree (along with the Intel Aero CSD startup file: **csd.service**).
+
+## Configuration File (Runtime)
+
+CSD loads a configuration file with custom options/settings when it is started. 
+The [samples/files](https://github.com/intel/camera-streaming-daemon/tree/master/samples/files) directory contains sample configuration files that you can use for Ubuntu, Aero and other platforms.
+
+By default CSD will look for a configuration file in **/etc/csd/main.conf**. You can copy the sample file for your platform to that location or you can over-ride this file location using the `CSD_CONF_FILE` environment variable or the `-c` switch when starting CSD.
+
+> **Tip** The format of the configuration file is self-documented in [samples/files/config.sample](https://github.com/intel/camera-streaming-daemon/blob/master/samples/files/config.sample). 
+
+## Run
+
+The line below shows how to start CSD, specifying a configuration file (in this case the Ubuntu **.conf** file in the source tree):
+```
+./csd -c samples/files/ubuntu.conf
+```
+
+Other command line options can be displayed using the `-h` flag:
+```sh
+$ ./csd -h
+csd [OPTIONS...]
+
+  -c --conf-file                   .conf file with configurations for camera-streaming-daemon.
+  -d --conf-dir <dir>              Directory where to look for .conf files overriding
+                                   default conf file.
+  -g --debug-log-level <level>     Set debug log level. Levels are
+                                   <error|warning|notice|info|debug>
+  -v --verbose                     Verbose. Same as --debug-log-level=debug
+  -h --help                        Print this message
+```
+
+> **Tip** The *Intel Aero* has additional support for auto-starting CSD on boot. This is discussed separately [below](TBD).
+
+
+## Quickstart Guides
+
+The following sections provide turnkey instructions to quickly set up CSD for some of the more common platforms.
+
+
+### Intel Aero
+
+CSD is typically set up on Aero as described below.
+
+**Build Aero on Ubuntu:**
+1. Install the [Core](#core_deps), [Avahi](#avahi_deps) and [RealSense](#realsense_deps) pre-requisites listed above:
+   ```sh
+   sudo apt-get update -y
+   sudo apt-get install git autoconf libtool python-pip -y
+   sudo apt-get install gstreamer-1.0 \
+       libgstreamer-plugins-base1.0-dev \
+       libgstrtspserver-1.0-dev -y
+   ## Required python packages
+   sudo pip2 -q install -U future
+   # Avahi
+   sudo apt-get install libavahi-client-dev libavahi-core-dev libavahi-glib-dev -y
+   # RealSense
+   echo 'deb "http://realsense-alm-public.s3.amazonaws.com/apt-repo" xenial main' | sudo tee /etc/apt/sources.list.d/realsense-latest.list
+   sudo apt-key adv --keyserver keys.gnupg.net --recv-key D6FB2970 
+   sudo apt update -y
+   sudo apt-get install librealsense-dev -y
+   ```
+1. Configure Aero as shown:
+   ```
+   ./autogen.sh && ./configure --enable-aero --enable-mavlink --enable-avahi
+   ```
+1. Build CSD for Aero:
+   ```
+   make
+   ```
+   
+**Deploy CSD to Aero**:
+[Deploy CSD to Aero](https://github.com/intel/camera-streaming-daemon/wiki/Deploying-on-Aero) explains how to add CSD to the *Intel Aero* image. 
+* *csd* must be placed in **/usr/bin**. 
+* The [aero.conf](https://github.com/intel/camera-streaming-daemon/blob/master/samples/files/aero.conf) file must be placed in **/etc/csd**.
+<!-- * where should csd.service be copied? -->
+
+**Verify the installation:**
+1. Make sure CSD is running:
+   ```sh
+   systemctl status csd
+   ```
+1. Run the [Basic Testing](#basic_testing) below to verify that CSD is working correctly.
+
+
+### CSD Serving Camera/WebCams on Ubuntu
+
+The section shows how to set up CSD on Ubuntu to share connected cameras/webcams.
+
+1. Install the [Core](#core_deps) and [Avahi](#avahi_deps) pre-requisites:
+   ```sh
+   sudo apt-get update -y
+   sudo apt-get install git autoconf libtool python-pip -y
+   sudo apt-get install gstreamer-1.0 \
+       libgstreamer-plugins-base1.0-dev \
+       libgstrtspserver-1.0-dev -y
+   ## Required python packages
+   sudo pip2 -q install -U future
+   # Avahi
+   sudo apt-get install libavahi-client-dev libavahi-core-dev libavahi-glib-dev -y
+   ```
+1. Configure CSD as shown:
+```
+./autogen.sh && ./configure --enable-mavlink --enable-avahi
+```
+1. Build CSD:
+   ```
+   make
+   ```
+1. Attach supported cameras to Ubuntu.
+   > **Note** Any camera that supports the [Video4Linux (V4L2) API](https://linuxtv.org/downloads/v4l-dvb-apis/uapi/v4l/v4l2.html) should be automatically detected. Some readily-available cameras that are known to work are: *Logitech C270 HD Webcam*, *Sony PlayStation Eye Camera*, *Intel RealSense*.
+1. Run CSD
+   ```
+   ./csd -c samples/files/ubuntu.conf
+   ```
+
+Then run the [Basic Testing](#basic_testing) below to verify that CSD is working correctly.
+
+
+### CSD sharing PX4/Gazebo Camera (Ubuntu)
+
+To set up CSD with Gazebo:
+
+1. Install the [Core](#core_deps) and [Avahi](#avahi_deps) pre-requisites:
+   ```sh
+   sudo apt-get update -y
+   sudo apt-get install git autoconf libtool python-pip -y
+   sudo apt-get install gstreamer-1.0 \
+       libgstreamer-plugins-base1.0-dev \
+       libgstrtspserver-1.0-dev -y
+   ## Required python packages
+   sudo pip2 -q install -U future
+   # Avahi
+   sudo apt-get install libavahi-client-dev libavahi-core-dev libavahi-glib-dev -y
+   ```
+1. Install [Gazebo and PX4 SITL](#gazebo_deps) using the scripts in the *PX4 Developer Guide*: [Development Environment on Linux > jMAVSim/Gazebo Simulation](https://dev.px4.io/en/setup/dev_env_linux.html#jmavsimgazebo-simulation).
+
+1. Configure CSD as shown:
+```
+./autogen.sh && ./configure --enable-mavlink --enable-avahi --enable-gazebo
+```
+
+To run csd on Ubuntu along with gazebo PX4-SITL use:
+ 
+1. Open *QGroundControl* build from master branch.
+1. Edit the *typhoon_h480* configuration file in the PX4 source (**/Firmware/posix-configs/SITL/init/ekf2/typhoon_h480**).
+   * Replace:
+     ```
+     mavlink start -x -u 14556 -r 4000000
+     ```
+   * With:
+     ```
+     mavlink start -x -u 14556 -r 4000000 -f
+     mavlink start -x -u 24550 -f -o 34550
+     ```
+1. Start PX4-SITL gazebo from the PX4 **/Firmware** folder:
+   ```
+   make posix gazebo_typhoon_h480
+   ```
+1. Run CSD with using the Gazebo configuration file:
+   ```sh
+   ./csd -c samples/files/gazebo.conf
+   ```
+
+Then run the [sanity tests](#sanity_tests) below to verify that CSD is working correctly.
+
+
+<span id="sanity_tests"></span>
+## Sanity Tests
+
+This section outlines some basic sanity tests that you can use to verify that the system is working properly.
+
+If these tests pass then CSD is configured properly. 
+
+<!-- need to check all for Gazebo too -->
+
+### Verify Linux System has Cameras
+
+This test verifies that Linux itself is aware that a camera(s) are connected.
+
+Enter the following command to list connected video sources:
+```
+ls -l /dev/video*
+```
+
+You should see different messages depending on whether or not a camera is connected:
+```
+crw-rw----+ 1 root video 81, 0 Mar  2 16:15 /dev/video0
+```
+```
+ls: cannot access 'dev/video*': No such file or directory
+  ```
+
+If no camera is detected you'll need to further debug Linux (not a CSD problem).
+
+> **Tip** You can also use the *v4l-utils* tools to detect compatible cameras. 
+> ```
+> sudo apt-get install v4l-utils
+> v4l2-ctl --list-devices
+> ```
+
+### Verify CSD Startup
+
+This test verifies what cameras CSD has detected, what streams were created, and also confirms which services were started (i.e. RTSP video streaming, MAVLink and Avahi).
+
+Simply run CSD with verbose logging (via the `-v` flag). The example below shows the console output generated on a Ubuntu system with an integrated webcam:
+
+```
+$ ./csd -v -c samples/files/ubuntu.conf
+
+ConfFile: Adding section 'gstreamer'
+ConfFile: Adding section 'v4l2'
+ConfFile: Adding section 'mavlink'
+ConfFile: Adding section 'uri'
+ConfFile: Adding section 'imgcap'
+Found V4L2 camera device video0
+v4l2 device :: /dev/video0
+CameraComponent path:/dev/video0 with Camera Definition
+V4L2 device : /dev/video0
+addCameraComponent
+CAMERA SERVER START
+MAVLINK START
+
+Open UDP [5]
+Adding fd: 5 glib_flags: 1
+Adding stream /video0 (VirtualBox Webcam - Integrated )
+Adding stream /rsdepth (RealSense Depth Camera)
+Adding stream /rsir (RealSense Infrared Camera)
+Adding stream /rsir2 (RealSense Infrared Camera2)
+AVAHI START
+
+Starting Camera Streaming Daemon
+UDP: [5] wrote 21 bytes
+...
+```
+
+
+<!-- TODO Test above with Gazebo, Note that QGC latest does work, update intro to link forward to the quickstarts.Verify the quickstarts capture everything in Ubuntu quickstart version. --> 
