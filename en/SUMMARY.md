@@ -14,7 +14,6 @@
   * [Extending CSD](guide/extending_csd.md)
 * [Samples/Examples](samples.md)
 * [Contributing](contribute/README.md)
-* [ZHW_USEFUL](ZHW_USEFUL.md)
 
 
 ## Dronecode Shortcuts

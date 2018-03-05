@@ -8,7 +8,7 @@
 
 The Dronecode Camera Server (a.k.a., *Camera Streaming Daemon* - CSD) is an extensible Linux camera server for interfacing cameras with the Dronecode platform. 
 
-It can connect to multiple cameras and provides access to them via the [MAVLink Camera Protocol](https://mavlink.io/en/protocol/camera.html) and RTSP video streams. It can also advertise available RTPS streams and interact with Gazebo to provide access to a camera running within a simulation.
+CSD can connect to multiple cameras via an extensible back-end, and provides access to them using the [MAVLink Camera Protocol](https://mavlink.io/en/protocol/camera.html) and RTSP video streams. It can also advertise available RTPS streams and interact with Gazebo to provide access to a camera running within a simulation.
 
 > **Tip** The daemon is the easiest way for Camera OEMs to interface with the Dronecode platform. Many cameras will just work "out of the box". At most, OEMs may need to implement a camera integration layer.
 
