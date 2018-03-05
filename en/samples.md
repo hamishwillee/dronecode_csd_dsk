@@ -15,7 +15,7 @@ And then in a computer connected to the target drone using WiFi or any other Eth
 ./samples/camera-sample-mavlink-client
 ```
 
-More information about the camera-sample-mavlink-client is located in [[samples|Samples#camera-sample-mavlink-client]] wiki page.
+More information about the camera-sample-mavlink-client is located [below](#camera-sample-mavlink-client).
 
 -----------------------------------------------
 // Below is from Wiki ///
@@ -28,6 +28,7 @@ make samples
 ```
 
 ## camera-sample-client
+
 This sample is used to test camera-streaming-daemon avahi publishing.
 To use it, first start the camera-streaming-daemon:
 

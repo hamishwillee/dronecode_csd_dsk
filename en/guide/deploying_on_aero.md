@@ -4,7 +4,7 @@ Last available image for Aero doesn't have all dependencies to run Camera-Stream
 
 ## Build an updated Aero image
 
-Follow instructions on https://github.com/intel-aero/meta-intel-aero/wiki/Quickstart-Guide#get-sources in order to get Aero sources. After running `repo sync` command checkout the master branch in meta-intel-aero directory.
+Follow instructions on [meta-intel-aero > Quickstart > get-sources](https://github.com/intel-aero/meta-intel-aero/wiki/Quickstart-Guide#get-sources) in order to get Aero sources. After running `repo sync` command checkout the master branch in meta-intel-aero directory.
 
 ```
 cd meta-intel-aero
@@ -12,13 +12,13 @@ git checkout intel-aero/master
 cd ..
 ```
 
-After that, keep following the guide from: https://github.com/intel-aero/meta-intel-aero/wiki/Quickstart-Guide#set-environment to build and flash the image.
+After that, keep following the guide from: [meta-intel-aero > Quickstart > set-environment](https://github.com/intel-aero/meta-intel-aero/wiki/Quickstart-Guide#set-environment) to build and flash the image.
 
 Now it is necessary to boot Aero board and set up an ssh connection with your computer, following information on https://github.com/intel-aero/meta-intel-aero/wiki/Functionality#wi-fi
 
 ## Copy camera-streaming-daemon to Aero board
 
-After building camera-streaming-daemon following information on [Quickstart Guide](Quickstart-Guide), copy the binary to the board:
+After building camera-streaming-daemon following information on [Quickstart — Intel Aero](../getting_started/quick_start_intel_aero.md), copy the binary to the board:
 ```
 scp camera-streaming-daemon 192.168.1.1:
 ```
@@ -33,5 +33,7 @@ ssh 192.18.1.1
 
 ## Test it
 
-Daemon running on drone can be tested using same approaches described in https://github.com/01org/camera-streaming-daemon/wiki/Quickstart-Guide#testing page.
+Daemon running on drone can be tested using same approaches described in:
+* [Sanity Tests](../getting_started/sanity_tests.md)
+* [Manual Testing](../test/README.md)
  

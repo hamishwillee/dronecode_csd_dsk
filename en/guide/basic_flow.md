@@ -5,7 +5,7 @@
 ## Video Discovery
 
 Camera Streaming Daemon scans the system devices looking for V4l2 devices to be added to the internal stream list. V4l2 API is used to retrieve extra information about the videos, such as resolution and supported formats.
-The Daemon can be extended to support custom video streams that are not supported by V4l. Information about that is documented at [Extending Camera Streaming Daemon](Extending). All custom videos are also added to the internal video stream list.
+The Daemon can be extended to support custom video streams that are not supported by V4l. Information about that is documented at [Extending CSD](../guide/extending_csd.md). All custom videos are also added to the internal video stream list.
 
 ## Video Advertisement
 
