@@ -1,5 +1,7 @@
 # Quickstart Guide — Gazebo Camera
 
+> **Warning** These instructions are in progress. At time of writing build without `--enable-mavlink` and connect on `udp port 5600` (RTSP publishing not supported). To be reviewed 9 March 2018. 
+
 This Quickstart shows how to build CSD on Ubuntu LTS 16.04 (with support for MAVLink and Avahi) and connect to a camera running within a Gazebo/PX4 vehicle simulation. 
 
 

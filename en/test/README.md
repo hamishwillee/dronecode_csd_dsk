@@ -8,7 +8,7 @@ This topic shows how to test the main functionality provided by CSD:
 
 You can use `avahi-browse` to see the list of connected cameras and the details of their RTSP stream (hostname, address, port, etc).
 
-The command (and example output) are shown below:
+The command (and some typical example output) are shown below:
 ```
 $ avahi-browse -r _rtsp._udp
 
