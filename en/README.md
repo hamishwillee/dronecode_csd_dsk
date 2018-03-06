@@ -1,10 +1,7 @@
 # Dronecode Camera Server SDK
 
 [![Build Status](https://travis-ci.org/intel/camera-streaming-daemon.svg?branch=master)](https://travis-ci.org/intel/camera-streaming-daemon)
-<a href="https://scan.coverity.com/projects/01org-camera-streaming-daemon">
-  <img alt="Coverity Scan Build Status"
-       src="https://scan.coverity.com/projects/12056/badge.svg"/>
-</a>
+<!-- <a href="https://scan.coverity.com/projects/01org-camera-streaming-daemon"><img alt="Coverity Scan Build Status" src="https://scan.coverity.com/projects/12056/badge.svg"/></a> -->
 
 The Dronecode Camera Server (a.k.a., *Camera Streaming Daemon* - CSD) is an extensible Linux camera server for interfacing cameras with the Dronecode platform. 
 
