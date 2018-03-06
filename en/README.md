@@ -3,18 +3,20 @@
 [![Build Status](https://travis-ci.org/intel/camera-streaming-daemon.svg?branch=master)](https://travis-ci.org/intel/camera-streaming-daemon)
 <!-- <a href="https://scan.coverity.com/projects/01org-camera-streaming-daemon"><img alt="Coverity Scan Build Status" src="https://scan.coverity.com/projects/12056/badge.svg"/></a> -->
 
-The Dronecode Camera Server (a.k.a., *Camera Streaming Daemon* - CSD) is an extensible Linux camera server for interfacing cameras with the Dronecode platform. 
+The Dronecode Camera Server (a.k.a., *Camera Streaming Daemon* - CSD) is an extensible Linux camera server for interfacing any camera with the Dronecode platform.
 
-CSD can connect to multiple cameras via an extensible back-end, and provides access to them using the [MAVLink Camera Protocol](https://mavlink.io/en/protocol/camera.html) and RTSP video streams. It can also advertise available RTPS streams and interact with Gazebo to provide access to a camera running within a simulation.
+CSD can connect to multiple cameras and provides access to them via the [MAVLink Camera Protocol](https://mavlink.io/en/protocol/camera.html) and RTSP video streams (it can also advertise available RTSP streams).
 
-> **Tip** The daemon is the easiest way for Camera OEMs to interface with the Dronecode platform. Many cameras will just work "out of the box". At most, OEMs may need to implement a camera integration layer.
+Out of the box the CSD connects to cameras that support the [Video4Linux (V4L2) API](https://linuxtv.org/downloads/v4l-dvb-apis/uapi/v4l/v4l2.html) and can also provide access to a camera running within a Gazebo simulation. The CSD has an extensible back-end that can be used to support other types of cameras and also new front-end protocols.
+
+> **Tip** The daemon is the easiest way for Camera OEMs to interface with the Dronecode Platform. Many cameras will just work "out of the box". At most, OEMs may need extend the backend to support their own Linux camera interface.
 
 
 ## Forums and Chat {#support}
 
 The core development team and community are active on the following chat channel:
 
-* [Slack](http://slack.px4.io) (sign up)
+* [Slack](http://slack.px4.io) (sign up) - channel `#camera-payload-api`
 
 
 ## Reporting Bugs & Issues
