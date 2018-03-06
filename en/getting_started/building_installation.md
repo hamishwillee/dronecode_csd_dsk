@@ -108,16 +108,14 @@ The full configuration syntax is given below:
 
 The optional configuration options enable specific functionality at compile-time:
 * `--enable-aero`: Enables aero-specific bottom bottom facing VGA camera (OV7251 sensor for optical flow/VIO).
+* `--enable-realsense`: Enables Intel RealSense 3D Camera.
 * `--enable-avahi`: Enables Avahi to advertise the list of available RTSP streams.
 * `--enable-mavlink`: Enables MAVLink [Camera Protocol](https://mavlink.io/en/protocol/camera.html) support.
 * `--enable-gazebo`: Enables Gazebo camera.
 
-In addition:
-* Support for the RealSense 3D camera is enabled automatically if the [RealSense binaries](#realsense_deps) are present.
-* CSD generates the file **csd.service** by default (see [Auto-start CSD](../guide/autostart.md)).
-  File generation can be disabled/configured using:
-  * `--disable-systemd`: Disable *systemd* support (i.e. on systems where *systemd* is not present).
-  * `--with-systemdsystemunitdir <path>`: Set the *systemd* system directory to `<path>` (Default is taken from **pkg-config**).
+In addition, CSD generates the file **csd.service** by default (see [Auto-start CSD](../guide/autostart.md)). File generation can be disabled/configured using:
+* `--disable-systemd`: Disable *systemd* support (i.e. on systems where *systemd* is not present).
+* `--with-systemdsystemunitdir <path>`: Set the *systemd* system directory to `<path>` (Default is taken from **pkg-config**).
 
 The configuration step will fail gracefully if any [dependency](#dependencies) required by the specified configuration is not available.
 At the end of the configuration process the system will output a report showing what additional features are enabled: 

@@ -1,6 +1,6 @@
 # Quickstart Guide — Intel Aero
 
-This Quickstart provides turnkey instructions for building CSD on Ubuntu LTS 16.04 (with support for Realsense, Aero bottom facing camera, MAVLink and Avahi) and then deploy it to Intel Aero. 
+This Quickstart provides turnkey instructions for building CSD on Ubuntu LTS 16.04 (with support for the RealSense 3D Camera, Aero bottom facing camera, MAVLink and Avahi) and then deploy it to Intel Aero. 
 
 ## Build CSD
 
@@ -30,13 +30,13 @@ To build CSD:
    ```
 1. Configure CSD with the normal Aero settings:
    ```
-   ./autogen.sh && ./configure --enable-aero --enable-mavlink --enable-avahi
+   ./autogen.sh && ./configure --enable-aero --enable-realsense --enable-mavlink --enable-avahi
    ```
 1. Build CSD for Aero:
    ```
    make
    ```
-   
+
 ## Deploy CSD to Aero
 
 [Deploy CSD to Aero](https://github.com/intel/camera-streaming-daemon/wiki/Deploying-on-Aero) explains how to add CSD to the *Intel Aero* image. 
