@@ -114,7 +114,7 @@ The optional configuration options enable specific functionality at compile-time
 
 In addition:
 * Support for the RealSense 3D camera is enabled automatically if the [RealSense binaries](#realsense_deps) are present.
-* CSD generates the file **csd.service** by default (used by the *Intel Aero* (only) to auto-start CSD on boot).
+* CSD generates the file **csd.service** by default (see [Auto-start CSD](../guide/autostart.md)).
   File generation can be disabled/configured using:
   * `--disable-systemd`: Disable *systemd* support (i.e. on systems where *systemd* is not present).
   * `--with-systemdsystemunitdir <path>`: Set the *systemd* system directory to `<path>` (Default is taken from **pkg-config**).
@@ -139,21 +139,14 @@ make
 
 The *csd* executable will be created in the root of your CSD source tree (along with the Intel Aero CSD startup file: **csd.service**).
 
-## Configuration File (Runtime)
-
-CSD loads a configuration file with custom options/settings when it is started. 
-The [samples/files](https://github.com/intel/camera-streaming-daemon/tree/master/samples/files) directory contains sample configuration files that you can use for Ubuntu, Aero and other platforms.
-
-By default CSD will look for a configuration file in **/etc/csd/main.conf**. You can copy the sample file for your platform to that location or you can over-ride this file location using the `CSD_CONF_FILE` environment variable or the `-c` switch when starting CSD.
-
-> **Tip** The format of the configuration file is self-documented in [samples/files/config.sample](https://github.com/intel/camera-streaming-daemon/blob/master/samples/files/config.sample). 
-
 ## Run
 
-The line below shows how to start CSD, specifying a configuration file (in this case the Ubuntu **.conf** file in the source tree):
+The line below shows how to start CSD, specifying a [CSD Configuration File](../guide/configuration_file.md) (in this case the Ubuntu **.conf** file in the source tree):
 ```
 ./csd -c samples/files/ubuntu.conf
 ```
+
+> **Tip** The [samples/files](https://github.com/intel/camera-streaming-daemon/tree/master/samples/files) directory contains sample [configuration files](../guide/configuration_file.md) that you can use to set up CSD for use on Ubuntu, Aero and other platforms. To use a sample file, copy it to **/etc/csd/main.conf**, specify it in the `CSD_CONF_FILE` environment variable, or set the `-c` switch when starting CSD.
 
 Other command line options can be displayed using the `-h` flag:
 ```sh
@@ -169,7 +162,7 @@ csd [OPTIONS...]
   -h --help                        Print this message
 ```
 
-> **Tip** The *Intel Aero* has additional support for auto-starting CSD on boot. This is discussed separately [below](TBD).
+> **Note** CSD can also be started automatically on boot. This is discussed in [Quickstart — Intel Aero](../getting_started/quick_start_intel_aero.md) and [Autostart CSD](../guide/autostart.md).
 
 
 ## Sanity Tests

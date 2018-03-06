@@ -42,7 +42,7 @@ To build CSD:
 [Deploy CSD to Aero](https://github.com/intel/camera-streaming-daemon/wiki/Deploying-on-Aero) explains how to add CSD to the *Intel Aero* image. 
 * *csd* must be placed in **/usr/bin**. 
 * The [aero.conf](https://github.com/intel/camera-streaming-daemon/blob/master/samples/files/aero.conf) file must be placed in **/etc/csd**.
-<!-- * where should csd.service be copied? -->
+* The *csd.service* file must be copied to **/lib/system/system** (see [Autostart CSD](../guide/autostart.md)).
 
 ## Verify Installation
 

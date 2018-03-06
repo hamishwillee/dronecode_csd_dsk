@@ -11,8 +11,10 @@
 * [Guide](guide/overview.md)
   * [Basic Flow](guide/basic_flow.md)
   * [Deploying on Aero](guide/deploying_on_aero.md)
+  * [CSD Configuration File](guide/configuration_file.md)
+  * [Autostart CSD](guide/autostart.md)
   * [Extending CSD](guide/extending_csd.md)
-* [Samples/Examples](samples.md)
+* [Examples/Samples](examples/samples.md)
 * [Contributing](contribute/README.md)
 
 
