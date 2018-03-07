@@ -35,4 +35,4 @@ This Quickstart shows how to build CSD on Ubuntu LTS 16.04 (with support for MAV
    ./csd -c samples/files/ubuntu.conf
    ```
 
-Then run the [Sanity Tests](sanity_tests.md) to verify that CSD is working correctly.
+Then run the [Sanity Tests](../test/sanity_tests.md) to verify that CSD is working correctly.

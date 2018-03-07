@@ -68,4 +68,4 @@ To deploy CSD to Aero:
    ```sh
    systemctl status csd
    ```
-1. Run the [Sanity Tests](sanity_tests.md) to verify that CSD is working correctly.
+1. Run the [Sanity Tests](../test/sanity_tests.md) to verify that CSD is working correctly.

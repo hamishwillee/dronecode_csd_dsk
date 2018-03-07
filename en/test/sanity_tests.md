@@ -1,6 +1,6 @@
 # Sanity Tests
 
-This section outlines some basic sanity tests that you can use to verify that the system is working properly.
+This section outlines some basic sanity tests that you can use to verify that CSD is working properly.
 
 <!-- need to check all for Gazebo too -->
 

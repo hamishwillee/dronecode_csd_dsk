@@ -34,6 +34,6 @@ ssh 192.18.1.1
 ## Test it
 
 Daemon running on drone can be tested using same approaches described in:
-* [Sanity Tests](../getting_started/sanity_tests.md)
+* [Sanity Tests](../test/sanity_tests.md)
 * [Manual Testing](../test/README.md)
  

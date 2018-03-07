@@ -64,4 +64,4 @@ To run CSD on Ubuntu along with Gazebo PX4-SITL:
    ./csd -c samples/files/gazebo.conf
    ```
 
-Then run the [Sanity Tests](sanity_tests.md) to verify that CSD is working correctly.
+Then run the [Sanity Tests](../test/sanity_tests.md) to verify that CSD is working correctly.

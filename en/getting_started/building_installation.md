@@ -165,4 +165,4 @@ csd [OPTIONS...]
 
 ## Sanity Tests
 
-After installing CSD, use the [Sanity Tests](sanity_tests.md) to verify that CSD is working correctly.
+After installing CSD, use the [Sanity Tests](../test/sanity_tests.md) to verify that CSD is working correctly.
