@@ -1,8 +1,8 @@
 # Quickstart Guide — Intel Aero
 
-> **Tip** CSD is pre-integrated into Intel Aero images (1.6.1 and later). These instructions are only needed when developing and testing newer versions of CSD.
+> **Tip** CSD is pre-integrated into *Intel Aero* images (1.6.1 and later). These instructions are only needed when developing and testing newer versions of CSD.
 
-This guide provides turnkey instructions for building CSD on Ubuntu LTS 16.04 (with support for the RealSense 3D Camera, Aero bottom facing camera, MAVLink and Avahi) and then deploy it to Intel Aero.
+This guide provides turnkey instructions for building CSD on Ubuntu LTS 16.04 (with support for the RealSense 3D Camera, Aero bottom facing camera, MAVLink and Avahi) and then deploying it to *Intel Aero*.
 
 ## Build CSD
 
