@@ -1,6 +1,8 @@
 # Quickstart Guide — Intel Aero
 
-This Quickstart provides turnkey instructions for building CSD on Ubuntu LTS 16.04 (with support for the RealSense 3D Camera, Aero bottom facing camera, MAVLink and Avahi) and then deploy it to Intel Aero. 
+> **Tip** CSD is pre-integrated into Intel Aero images (1.6.1 and later). These instructions are only needed when developing and testing newer versions of CSD.
+
+This guide provides turnkey instructions for building CSD on Ubuntu LTS 16.04 (with support for the RealSense 3D Camera, Aero bottom facing camera, MAVLink and Avahi) and then deploy it to Intel Aero.
 
 ## Build CSD
 
@@ -37,18 +39,33 @@ To build CSD:
    make
    ```
 
+The *csd* binary and *csd.system* files are generated in the root of the CSD source tree.
+
 ## Deploy CSD to Aero
 
-[Deploy CSD to Aero](https://github.com/intel/camera-streaming-daemon/wiki/Deploying-on-Aero) explains how to add CSD to the *Intel Aero* image. 
-* *csd* must be placed in **/usr/bin**. 
-* The [aero.conf](https://github.com/intel/camera-streaming-daemon/blob/master/samples/files/aero.conf) file must be placed in **/etc/csd**.
-* The *csd.service* file must be copied to **/lib/system/system** (see [Autostart CSD](../guide/autostart.md)).
+To deploy CSD to Aero:
+
+1. Copy the *csd* binary using *scp*:
+   ```
+   scp csd uname@ip-addr:/usr/bin/
+   ```
+   where:
+   * `ip-addr` is IP address of Aero on the network (check using *ifconfig*)
+   * `uname` is `root` (Yocto) or `<user-defined>` (Ubuntu)
+
+1. Reboot Aero (Aero starts CSD on boot)
+
+> **Note** The Aero configuration file ([aero.conf](https://github.com/intel/camera-streaming-daemon/blob/master/samples/files/aero.conf)) and [autostart file](../guide/autostart.md) (*csd.service*) typically do not change or need to be updated. If required, you could do so using the following commands:
+  ```
+  scp samples/files/aero.conf uname@ip-addr:/etc/csd/main.conf
+  scp csd.system uname@ip-addr:/lib/system/system/csd.system
+  ```
+
 
 ## Verify Installation
 
-1. Make sure CSD is running (Aero starts CSD on boot):
+1. Make sure CSD is running:
    ```sh
    systemctl status csd
    ```
 1. Run the [Sanity Tests](sanity_tests.md) to verify that CSD is working correctly.
-
