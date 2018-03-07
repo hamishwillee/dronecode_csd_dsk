@@ -9,7 +9,7 @@ By default CSD will look for a configuration file in **/etc/csd/main.conf**. You
 The headings below explain the structure and main sections of the configuration file (see also [samples/files/config.sample](https://github.com/intel/camera-streaming-daemon/blob/master/samples/files/config.sample)).
 
 
-## Config File Structure
+## File Structure
 
 The configuration file is composed of sections, each containing *keys* and *values*. For example:
 ```
@@ -32,9 +32,9 @@ The following sections, along with key/value definitions, are likely to be prese
 
 Key | Description | Default
 -- | --- | ---
-`muxer` | Muxer used to create the gstreamer pipeline. | rtpjpegpay
-`encoder` | Muxer used to create the gstreamer pipeline. | jpegenc
-`converter` | Converter used to create the gstreamer pipeline. | videoconvert
+`muxer` | Muxer used to create the *gstreamer* pipeline. | rtpjpegpay
+`encoder` | Encoder used to create the *gstreamer* pipeline. | jpegenc
+`converter` | Converter used to create the *gstreamer* pipeline. | videoconvert
 
 Example:
 ```
@@ -44,18 +44,23 @@ encoder=x264enc
 converter=autovideoconvert
 ```
 
+> **Note** The settings above select *gstreamer* plugins that are compatible with *QGroundControl*.
+
 
 ### [v4l2]
 
 Key | Description | Default
 -- | --- | ---
-`blacklist` | Comma separated list of `/dev/video` devices that won't be exported by CSD. For example, if the video streams from cameras `/dev/video123` and `/dev/video456` could not be exported you would set: `blacklist = video123,video456`.| <empty>
+`blacklist` | Comma separated list of `/dev/video` devices that should not be exported (for RTSP or MAVLink). For example, if the video streams from cameras `/dev/video123` and `/dev/video456` could not be exported you would set: `blacklist = video123,video456`.| <empty>
 
 Example:
 ```
 [v4l2]
 blacklist=video10
 ```
+
+> **Note** V4L2 creates multiple device "nodes" for each camera device (these are suitable for different purposes). The `blacklist` key is used to ignore additional nodes, so that CSD only creates a single interface for each camera.
+
 
 ### [mavlink]
 
@@ -64,21 +69,10 @@ Key | Description | Default
 `port` | MAVLink destination UDP port. | 14550
 `broadcast_addr` | Broadcast address to send MAVLink heartbeat messages. | 255.255.255.255
 `rtsp_server_addr` | IP address or hostname of the interface where the RTSP server is running. This is the address that will be used by the client to make the RTSP request. | 0.0.0.0
-`system_id` | System ID of the CSD to be used in MAVLink communications. | 42
+`system_id` | System ID of the CSD to be used in MAVLink communications. This should typically match the ID of the connected autopilot (i.e. the CSD/connected cameras are considered MAVLink *components* of the autopilot *system*). | 42
 `component_id` | Component ID of the CSD to be used in MAVLink communications. | 100 (MAV_COMP_ID_CAMERA)
 
-Example:
-
-Gazebo/Ubuntu
-```
-[mavlink]
-port=24550
-broadcast_addr=127.0.0.255
-rtsp_server_addr=127.0.0.1
-system_id=1
-```
-
-Aero
+Example (for Aero):
 ```
 [mavlink]
 port=80550
