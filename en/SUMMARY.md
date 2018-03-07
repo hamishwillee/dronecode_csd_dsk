@@ -9,12 +9,12 @@
 * [Testing](test/README.md)
   * [Sanity Tests](test/sanity_tests.md)
   * [Manual Tests](test/manual_tests.md)
+  * [Test Apps](test/samples.md)
 * [Guide](guide/overview.md)
   * [Basic Flow](guide/basic_flow.md)
   * [CSD Configuration File](guide/configuration_file.md)
   * [Autostart CSD](guide/autostart.md)
   * [Extending CSD](guide/extending_csd.md)
-* [Examples/Samples](examples/samples.md)
 * [Contributing](contribute/README.md)
 
 

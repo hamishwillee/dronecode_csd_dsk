@@ -1,4 +1,4 @@
-# Samples/Examples
+# Test Apps
 
 The CSD samples are used to test/validate different CSD functionality, and in some cases as examples accompanying the guide (e.g. [camera-sample-custom](#camera-sample-custom) is a source-code example for the topic [Extend CSD > Camera Sample Custom](../guide/extending_csd.md#camera-sample-custom)).
 
