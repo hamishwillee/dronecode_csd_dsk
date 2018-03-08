@@ -1,6 +1,6 @@
-# Dronecode Camera Server SDK
+# Camera Streaming Daemon (Documentation Source Code)
 
-The Dronecode Camera Server (a.k.a. *Camera Streaming Daemon*) is an extensible Linux camera server for interfacing cameras with the Dronecode platform via MAVLink and RTSP.
+The *Camera Streaming Daemon* (CSD) is an extensible Linux camera server for interfacing any camera with the [Dronecode Platform](https://www.dronecode.org/) via MAVLink and RTSP.
 
 This repository contains the source code for the SDK documentation:
 
