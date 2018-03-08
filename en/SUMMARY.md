@@ -14,6 +14,7 @@
   * [Basic Flow](guide/basic_flow.md)
   * [CSD Configuration File](guide/configuration_file.md)
   * [Autostart CSD](guide/autostart.md)
+  * [Deploying CSD](guide/deploying.md)
   * [Extending CSD](guide/extending_csd.md)
 * [Contributing](contribute/README.md)
 
